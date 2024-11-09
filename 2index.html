@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Paste Reader</title>
+</head>
+<body>
+    <h3>Paste your CSV data below:</h3>
+    <textarea 
+        rows="10" 
+        cols="50" 
+        id="csvInput" 
+        style="width: 100%; max-width: 600px;"
+        placeholder="Paste your CSV data here and click 'Show Data'"
+    ></textarea>
+    <br><br>
+    <button onclick="showData()">Show Data</button>
+    <button onclick="clearData()">Clear</button>
+    <br><br>
+    <div id="output"></div>
+
+    <script>
+        function showData() {
+            var csv = document.getElementById('csvInput').value;
+            var output = document.getElementById('output');
+            
+            if(!csv) {
+                output.innerHTML = 'Please paste some CSV data';
+                return;
+            }
+
+            try {
+                var html = '<table border="1">';
+                var rows = csv.split(/\r?\n/);
+                
+                for(var i = 0; i < rows.length; i++) {
+                    if(rows[i].trim()) {
+                        html += '<tr>';
+                        var cells = rows[i].split(',');
+                        for(var j = 0; j < cells.length; j++) {
+                            html += '<td>' + cells[j].trim() + '</td>';
+                        }
+                        html += '</tr>';
+                    }
+                }
+                html += '</table>';
+                
+                output.innerHTML = html;
+            } catch(e) {
+                output.innerHTML = 'Error reading data';
+            }
+        }
+
+        function clearData() {
+            document.getElementById('csvInput').value = '';
+            document.getElementById('output').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
